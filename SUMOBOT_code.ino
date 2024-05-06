@@ -3,67 +3,74 @@ int y;
 int m;
 int r;
 int z;
-
+#define MB1 3
+#define MB2 2
+#define MA2 5
+#define MA1 4
+#define PS 7
+#define SI 8
 void setup() {
   // put your setup code here, to run once:
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(7, OUTPUT);
-  pinMode(8, INPUT);
+  pinMode(MB1, OUTPUT);
+  pinMode(MB2, OUTPUT);
+  pinMode(MA2, OUTPUT);
+  pinMode(MA1, OUTPUT);
+  pinMode(PS, OUTPUT);
+  pinMode(SI, INPUT);
 
   Serial.begin(9600);
-  digitalWrite(3, LOW);  //full stop
-  digitalWrite(2, LOW);
-  digitalWrite(4, LOW);
-  digitalWrite(5, LOW);
+  digitalWrite(MB2, LOW);  //full stop
+  digitalWrite(MB1, LOW);
+  digitalWrite(MA2, LOW);
+  digitalWrite(MA1, LOW);
   y = 0;
-  r = 0;
-  tone(7, 98.00);
+  x = 0;
+
+  tone(PS, 98.00);
   delay(150);
-  tone(7, 130.8);
+  tone(PS, 130.8);
   delay(150);
-  tone(7, 164.8);
+  tone(PS, 164.8);
   delay(100);
-  tone(7, 196.0);
+  tone(PS, 196.0);
   delay(250);
-  noTone(7);
+  noTone(PS);
   delay(100);
-  tone(7, 164.8);
+  tone(PS, 164.8);
   delay(100);
-  tone(7, 196.0);
+  tone(PS, 196.0);
   delay(600);
-  noTone(7);
+  noTone(PS);
   delay(1000);  //riff
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   x = analogRead(4);
-  m = analogRead(5);
+  z = analogRead(5);
+  Serial.print("x = ");
   Serial.println(x);
+  Serial.print("z = ");
+  Serial.println(z);
   delay(100);
   y = "HIGH";
-  if ((x < 1000)||/*(m < 1000))*/ {  //makes the bot turn around
-    digitalWrite(2, LOW);
-    digitalWrite(3, HIGH);
-    digitalWrite(4, LOW);
-    digitalWrite(5, HIGH);
+  if ((x < 980) || (z < 960)) {  //makes the bot turn around
+    digitalWrite(MB1, LOW);
+    digitalWrite(MB2, HIGH);
+    digitalWrite(MA2, LOW);
+    digitalWrite(MA1, HIGH);
     Serial.println(x);
-    delay(700);
-    digitalWrite(2, LOW);
-    digitalWrite(3, LOW);
-    digitalWrite(4, HIGH);
-    digitalWrite(5, LOW);
-    delay(900);
-
-
+    delay(400);
+    digitalWrite(MB1, HIGH);
+    digitalWrite(MB2, LOW);
+    digitalWrite(MA2, LOW);
+    digitalWrite(MA1, HIGH);
+    delay(250);
 
   } else {
-    digitalWrite(2, HIGH);  //wheels moving forward
-    digitalWrite(3, LOW);
-    digitalWrite(4, HIGH);
-    digitalWrite(5, LOW);
+    analogWrite(MB1, 60);  //wheels moving forward
+    digitalWrite(MB2, LOW);
+    analogWrite(MA2, 100);
+    digitalWrite(MA1, LOW);
   };
 }
